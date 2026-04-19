@@ -1,80 +1,131 @@
+"""Mathematical utility functions module.
+
+This module provides common mathematical operations including factorial calculation,
+prime number checking, greatest common divisor, least common multiple, and
+Fibonacci sequence generation.
 """
-Utility functions for the Sandbox Project.
 
-This module contains common utility functions that can be used throughout
-the project for various helper operations and basic functionality.
-"""
-
-import os
-import sys
-from typing import Any, Dict, List, Optional, Union
+import math
+from typing import List
 
 
-def get_version() -> str:
-    """
-    Get the current version of the project.
-    
-    Returns:
-        str: The current version string.
-    """
-    return "0.1.0"
+def factorial(n: int) -> int:
+    """Calculate the factorial of a non-negative integer.
 
-
-def hello_world(name: Optional[str] = None) -> str:
-    """
-    Generate a hello world greeting message.
-    
     Args:
-        name: Optional name to include in the greeting. If None, uses "World".
-        
+        n (int): Non-negative integer to calculate factorial for.
+
     Returns:
-        str: A greeting message.
+        int: Factorial of n (n!).
+
+    Raises:
+        ValueError: If n is negative.
+        TypeError: If n is not an integer.
     """
-    if name is None:
-        name = "World"
-    return f"Hello, {name}!"
+    if not isinstance(n, int):
+        raise TypeError("Input must be an integer")
+    if n < 0:
+        raise ValueError("Factorial is not defined for negative numbers")
+    if n == 0 or n == 1:
+        return 1
+    return math.factorial(n)
 
 
-def ensure_directory(path: str) -> bool:
-    """
-    Ensure that a directory exists, creating it if necessary.
-    
+def is_prime(n: int) -> bool:
+    """Check if a number is prime.
+
     Args:
-        path: The directory path to ensure exists.
-        
+        n (int): Integer to check for primality.
+
     Returns:
-        bool: True if directory exists or was created successfully, False otherwise.
+        bool: True if n is prime, False otherwise.
+
+    Raises:
+        TypeError: If n is not an integer.
     """
-    try:
-        os.makedirs(path, exist_ok=True)
+    if not isinstance(n, int):
+        raise TypeError("Input must be an integer")
+    if n < 2:
+        return False
+    if n == 2:
         return True
-    except (OSError, PermissionError):
+    if n % 2 == 0:
         return False
 
+    # Check odd divisors up to sqrt(n)
+    for i in range(3, int(math.sqrt(n)) + 1, 2):
+        if n % i == 0:
+            return False
+    return True
 
-def safe_get_dict_value(data: Dict[str, Any], key: str, default: Any = None) -> Any:
-    """
-    Safely get a value from a dictionary with a default fallback.
-    
+
+def gcd(a: int, b: int) -> int:
+    """Find the greatest common divisor of two integers using Euclidean algorithm.
+
     Args:
-        data: The dictionary to get the value from.
-        key: The key to look up.
-        default: The default value to return if key is not found.
-        
+        a (int): First integer.
+        b (int): Second integer.
+
     Returns:
-        Any: The value associated with the key, or the default value.
+        int: Greatest common divisor of a and b.
+
+    Raises:
+        TypeError: If a or b is not an integer.
     """
-    return data.get(key, default)
+    if not isinstance(a, int) or not isinstance(b, int):
+        raise TypeError("Both inputs must be integers")
+    return math.gcd(abs(a), abs(b))
 
 
-def is_valid_string(value: Any) -> bool:
-    """
-    Check if a value is a non-empty string.
-    
+def lcm(a: int, b: int) -> int:
+    """Calculate the least common multiple of two integers.
+
     Args:
-        value: The value to check.
-        
+        a (int): First integer.
+        b (int): Second integer.
+
     Returns:
-        bool: True if value is a non-empty string, False otherwise.
+        int: Least common multiple of a and b.
+
+    Raises:
+        TypeError: If a or b is not an integer.
+        ValueError: If both a and b are zero.
     """
-    return isinstance(value, str) and len(value.strip()) > 0
+    if not isinstance(a, int) or not isinstance(b, int):
+        raise TypeError("Both inputs must be integers")
+    if a == 0 and b == 0:
+        raise ValueError("LCM is undefined when both numbers are zero")
+    if a == 0 or b == 0:
+        return 0
+    return abs(a * b) // gcd(a, b)
+
+
+def fibonacci_sequence(n: int) -> List[int]:
+    """Generate the first n numbers in the Fibonacci sequence.
+
+    Args:
+        n (int): Number of Fibonacci numbers to generate.
+
+    Returns:
+        List[int]: List containing the first n Fibonacci numbers.
+
+    Raises:
+        TypeError: If n is not an integer.
+        ValueError: If n is negative.
+    """
+    if not isinstance(n, int):
+        raise TypeError("Input must be an integer")
+    if n < 0:
+        raise ValueError("Number of terms cannot be negative")
+    if n == 0:
+        return []
+    if n == 1:
+        return [0]
+    if n == 2:
+        return [0, 1]
+
+    sequence = [0, 1]
+    for i in range(2, n):
+        sequence.append(sequence[i-1] + sequence[i-2])
+
+    return sequence
