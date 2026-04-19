@@ -12,4 +12,4 @@ jobs:
           python-version: "3.11"
       - run: pip install pytest flake8
       - run: flake8 src/ tests/ --max-line-length=120 || true
-      - run: pytest tests/ -v
+      - run: PYTHONPATH=. pytest tests/ -v
