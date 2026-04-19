@@ -1,15 +1,15 @@
 name: CI
 on:
-  pull_request:                                                                                       
-      branches: [main]
-  jobs:
-    test:
-      runs-on: ubuntu-latest
-      steps:                                                                                            
-        - uses: actions/checkout@v4
-        - uses: actions/setup-python@v5                                                                 
-          with:                                             
-            python-version: "3.11"
-        - run: pip install pytest flake8
-        - run: flake8 src/ tests/ --max-line-length=120 || true                                         
-        - run: pytest tests/ -v
+  pull_request:
+    branches: [main]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install pytest flake8
+      - run: flake8 src/ tests/ --max-line-length=120 || true
+      - run: pytest tests/ -v
